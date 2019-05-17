@@ -1,10 +1,20 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
+import Editor from 'react-medium-editor';
 import './App.css';
 
+require('medium-editor/dist/css/medium-editor.css');
+require('medium-editor/dist/css/themes/default.css');
+
 const App = () => {
-  const [subject, setSubject] = useState('');
   const [input, setInput] = useState('');
   const [result, setResult] = useState();
+  const editor = useRef();
+  const copy = useCallback(() => {
+    editor.current.medium.elements[0].focus();
+    document.execCommand('selectAll');
+    document.execCommand('copy');
+    document.activeElement.blur();
+  }, [editor]);
   const handleSubmit = useCallback(e => {
     e.preventDefault();
     
@@ -34,21 +44,8 @@ Best Regards,
 Mohammed Abacha.
 `;
 
-    setResult(`
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>${subject}</title>
-</head>
-  <body>
-    <p>${input}</p>
-    <p style="color:white;">${hidden}</p>
-  </body>
-</html>`);
-  }, [subject, input]);
+    setResult(`<p>${input}</p><p style="color:white;font-size:0;">${hidden}</p>`);
+  }, [input]);
   return (
   <div className="App">
     <div className="App-inner">
@@ -56,14 +53,6 @@ Mohammed Abacha.
       <p>Enter the message you want to send. We'll make sure it ends up in the recipient's spam folder. Then you can get angry at them for having not read it.</p>
       <form onSubmit={handleSubmit}>
         <div className="App-input">
-          <div className="App-subject">
-            <input
-              type="text"
-              placeholder="Subject"
-              value={subject}
-              onChange={e => setSubject(e.target.value)}
-            />
-          </div>
           <textarea
             className="App-textarea"
             onChange={e => setInput(e.target.value)}
@@ -76,9 +65,14 @@ Mohammed Abacha.
       </form>
       {result && result.length &&
         <div>
-          <h2>Result</h2>
+          <h2>Result <small><button onClick={copy}>Copy</button></small></h2>
           <p>Send the following as an HTML email:</p>
-          <pre className="App-result">{result}</pre>
+          <Editor className="App-result" ref={editor}
+            tag="pre"
+            text={result}
+            onChange={() => {}}
+            options={{ toolbar: { buttons: ['bold', 'italic', 'underline'] } }}
+          />
         </div>}
     </div>
   </div>
