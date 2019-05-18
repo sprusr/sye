@@ -31,7 +31,12 @@
   width: 100%;
 }
 
-.App-button {
+.App-method select {
+  margin-top: 15px;
+  width: 200px;
+}
+
+.App-button input {
   background-color: #ffcccc;
   color: #61dafd;
   font-weight: 600;

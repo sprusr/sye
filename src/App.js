@@ -10,6 +10,7 @@ const App = () => {
   const editor = useRef();
   
   const [input, setInput] = useState('');
+  const [method, setMethod] = useState('aalto');
   const [result, setResult] = useState();
 
   const copy = useCallback(() => {
@@ -21,9 +22,9 @@ const App = () => {
 
   const handleSubmit = useCallback(e => {
     e.preventDefault();
-    const hidden = spams.aalto;
+    const hidden = spams[method];
     setResult(`<p>${input}</p><br />${hidden}`);
-  }, [input]);
+  }, [input, method]);
 
   return (
     <div className="App">
@@ -39,7 +40,15 @@ const App = () => {
               rows="8"
               value={input}
             />
-            <input className="App-button" type="submit" value="Spam"></input>
+            <div className="App-method">
+              <select value={method} onChange={e => setMethod(e.target.value)}>
+                <option value="aalto">Aalto</option>
+                <option value="whitetext">White Text</option>
+              </select>
+            </div>
+            <div className="App-button">
+              <input type="submit" value="Spam" />
+            </div>
           </div>
         </form>
         {result && result.length &&
