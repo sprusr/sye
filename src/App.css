@@ -49,4 +49,6 @@
 .App-result {
   font-size: 9pt;
   overflow: scroll;
+  border: 1px solid #61dafd;
+  padding: 5px;
 }
