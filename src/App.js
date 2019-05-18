@@ -55,12 +55,14 @@ const App = () => {
           <div>
             <h2>Result <small><button onClick={copy}>Copy</button></small></h2>
             <p>Send the following as an HTML email:</p>
-            <Editor className="App-result" ref={editor}
-              tag="pre"
-              text={result}
-              onChange={() => {}}
-              options={{ toolbar: { buttons: [] } }}
-            />
+            <div className="App-result">
+              <Editor ref={editor}
+                tag="div"
+                text={result}
+                onChange={() => {}}
+                options={{ toolbar: { buttons: [] } }}
+              />
+            </div>
           </div>}
       </div>
     </div>
